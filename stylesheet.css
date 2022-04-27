@@ -129,3 +129,10 @@ name {
 span.highlight {
   background-color: #ffffd0;
 }
+
+canvas {
+  background-color: #ffffff;
+  left: 0px;
+  position: absolute;
+  z-index: -1;
+}
