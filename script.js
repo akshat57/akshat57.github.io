@@ -6,6 +6,16 @@ var cameraY;
 var keys;
 var colors = [[156, 192, 231], [238, 238, 238], [250, 234, 203], [247, 219, 215]];
 
+function getWidth() {
+    return Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+    );
+}
+
 function startGame() {
 	circles = [];
     actions = [];
@@ -48,7 +58,7 @@ function removeCircle(){
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = window.innerWidth;
+        this.canvas.width = getWidth();
         this.canvas.height = document.getElementById("projects_body").offsetHeight;
         this.context = this.canvas.getContext("2d");
         document.getElementById("projects").appendChild(this.canvas);
@@ -64,6 +74,11 @@ var myGameArea = {
         })
         window.addEventListener('keyup', function (e) {
             keys[e.keyCode] = false;
+        })
+        window.addEventListener("resize", function(event) {
+            console.log('running');
+            myGameArea.canvas.width = getWidth();
+            myGameArea.canvas.height = document.getElementById("projects_body").offsetHeight;
         })
     },
     clear : function() {
