@@ -13,7 +13,7 @@ function startGame() {
 	cameraY = 0.0;
 	keys = {};
 	myGameArea.start();
-    actions.push(new Populate(50, 0.1));
+    actions.push(new Populate(20, 0.1));
 }
 
 function keyActions(){
