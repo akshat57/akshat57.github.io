@@ -148,3 +148,104 @@ canvas {
   position: absolute;
   z-index: -1;
 }
+
+/* Experience */
+
+#experience {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.experience-title {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.experience-entry {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 1px solid #eeeeee;
+}
+
+.experience-entry:last-child {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.experience-logo-container {
+  width: 90px;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-logo {
+  max-width: 75px;
+  max-height: 32px;
+  width: auto;
+  height: auto;
+  filter: none;
+  opacity: 1;
+}
+
+.experience-info {
+  flex: 1;
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.experience-company {
+  font-weight: 700;
+}
+
+.experience-role {
+  margin-left: 7px;
+  color: #555555;
+}
+
+.experience-description {
+  margin-top: 3px;
+  color: #555555;
+}
+
+@media (max-width: 600px) {
+  .experience-entry {
+    gap: 14px;
+  }
+
+  .experience-logo-container {
+    width: 65px;
+    min-width: 65px;
+  }
+
+  .experience-logo {
+    max-width: 58px;
+    max-height: 27px;
+  }
+
+  .experience-role {
+    display: block;
+    margin-left: 0;
+    margin-top: 1px;
+  }
+}
+
+.experience-date {
+  float: right;
+  color: #777777;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .experience-date {
+    float: none;
+    display: block;
+    margin-top: 2px;
+  }
+}
+
