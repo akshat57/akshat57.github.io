@@ -85,14 +85,12 @@ a:hover { color: var(--accent); }
 .hero-inner { position: relative; padding: 68px 0 56px; display: grid; grid-template-columns: [full-start] minmax(var(--gutter), 1fr) [wide-start] minmax(0, var(--side)) [content-start] min(var(--read), calc(100% - 2 * var(--gutter))) [content-end] minmax(0, var(--side)) [wide-end] minmax(var(--gutter), 1fr) [full-end]; }
 .hero-text { grid-column: content-start / wide-end; }
 .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(40px, 5.3vw, 66px); line-height: 1.03; letter-spacing: -0.022em; margin: 0 0 28px; text-wrap: balance; }
-/* byline under the title: one line of names, numbered affiliations below (paper style) */
-.byline { margin: 0 0 30px; font-family: var(--sans); }
-.byline-names { display: flex; flex-wrap: wrap; gap: 4px 26px; margin: 0 0 6px; font-size: 18px; font-weight: 500; }
-.byline-names a { color: var(--ink); text-decoration: none; }
-.byline-names a:hover { color: var(--accent-ink); text-decoration: underline; }
-.byline sup { font-size: .62em; font-weight: 500; line-height: 0; color: var(--accent-ink); margin-left: 2px; }
-.byline-affs { display: flex; flex-wrap: wrap; gap: 2px 22px; margin: 0; font-size: 15px; color: var(--ink-3); }
-.byline-affs sup { color: var(--ink-3); margin: 0 2px 0 0; }
+/* byline under the title: Authors | Affiliations columns, one row per author, no rules */
+.byline { display: grid; grid-template-columns: max-content max-content; gap: 3px 64px; margin: 0 0 32px; font-family: var(--sans); font-size: 15.5px; line-height: 1.5; }
+.byline-label { font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+.author-name { justify-self: start; font-weight: 500; color: var(--ink); text-decoration: none; }
+.author-name:hover { color: var(--accent-ink); text-decoration: underline; }
+.author-aff { color: var(--ink-3); }
 .lede { font-size: 23px; line-height: 1.45; color: var(--ink-2); margin: 0 0 34px; max-width: var(--read); text-wrap: balance; padding-left: 18px; border-left: 3px solid var(--accent); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 14.5px; font-weight: 500; color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--rule-2); border-radius: 999px; padding: 10px 18px; transition: border-color .15s, background-color .15s, color .15s; }
@@ -302,8 +300,7 @@ body.lb-open { overflow: hidden; }
 @media (max-width: 640px) {
   body { font-size: 17.5px; }
   blockquote.pull { font-size: 1.12em; padding-left: 16px; }
-  .byline-names { gap: 2px 18px; font-size: 16.5px; }
-  .byline-affs { gap: 2px 16px; font-size: 14px; }
+  .byline { grid-template-columns: max-content minmax(0, 1fr); column-gap: 24px; font-size: 15px; }
   ol.steps li { font-size: 16.5px; }
   details.appx-sub > p { font-size: 17.5px; }
   .brand-text { max-width: 58vw; }
