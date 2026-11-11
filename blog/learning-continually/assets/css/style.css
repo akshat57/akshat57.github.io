@@ -244,7 +244,9 @@ ul.bullets li::marker { color: var(--accent); }
 .reflist li { margin: 0 0 14px; scroll-margin-top: calc(var(--topbar) + 30px); }
 .reflist li:target { background: var(--accent-wash); box-shadow: 0 0 0 6px var(--accent-wash); border-radius: 2px; }
 .ref-ti { color: var(--ink); }
-.ref-link { font-family: var(--mono); font-size: 13px; color: var(--ink-3); word-break: break-all; }
+.ref-link { font-family: var(--mono); font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+@media (max-width: 520px) { .ref-link { white-space: normal; overflow-wrap: anywhere; } }
+.nw { white-space: nowrap; }   /* short inline math kept together with its bracket or punctuation */
 
 /* ---------- citation (site-only section after References) ---------- */
 .cite-text { font-family: var(--sans); font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }

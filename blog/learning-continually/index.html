@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap">
 <link rel="stylesheet" href="assets/vendor/katex/katex.min.css?v=3f94e1b737">
-<link rel="stylesheet" href="assets/css/style.css?v=9216f80ba5">
+<link rel="stylesheet" href="assets/css/style.css?v=c7fd55f499">
 </head>
 <body>
 <a class="skip" href="#sec-intro">Skip to the post</a>
@@ -80,9 +80,9 @@
 <div class="panels">
 <div class="panel"><img src="figures/population_serving_D_brighter.svg" width="900" height="360" alt="Population serving. Today: the same model, theta with a lock, serves identical copies to every user. Population serving: 1 perturb the source model theta_t, 2 serve and score: each perturbed copy theta_t plus sigma epsilon_i serves its own users and collects rewards, 3 merge the copies into theta_t+1, which is served in the next serving window" loading="lazy"></div>
 </div>
-<figcaption><span class="fignum">Figure 1.</span> <strong>Population serving.</strong> <em>Left:</em> today, every user is served the exact same model, and the compute spent serving it is not reused. <em>Right:</em> we propose population serving, where <strong>(1)</strong> we add a small amount of Gaussian noise to a common source model \(\theta_t\) to create a population of \(N\) perturbations and serve users a population of models instead of a single model, <strong>(2)</strong> each perturbation serves its own users and is scored on the traffic it receives, and <strong>(3)</strong> the perturbations are periodically merged into a new source model \(\theta_{t+1}\), from which a fresh population is drawn and served in the next serving window.</figcaption>
+<figcaption><span class="fignum">Figure 1.</span> <strong>Population serving.</strong> <em>Left:</em> today, every user is served the exact same model, and the compute spent serving it is not reused. <em>Right:</em> we propose population serving, where <strong>(1)</strong> we add a small amount of Gaussian noise to a common source model \(\theta_t\) to create a population of \(N\) perturbations and serve users a population of models instead of a single model, <strong>(2)</strong> each perturbation serves its own users and is scored on the traffic it receives, and <strong>(3)</strong> the perturbations are periodically merged into a new source model <span class="nw">\(\theta_{t+1}\),</span> from which a fresh population is drawn and served in the next serving window.</figcaption>
 </figure>
-<p>ES has so far been shown to work when every perturbation is evaluated on the same data, decoded greedily, and scored by a perfect verifier. None of this holds during deployment, where each perturbation sees its own stream of requests, decodes with sampling, and is scored by rewards that can be wrong. The primary question we aim to answer in this blog is therefore&mdash;<strong>can ES still learn effectively under the conditions encountered during deployment?</strong></p>
+<p>ES has so far been shown to work when every perturbation is evaluated on the same data, decoded greedily, and scored by a perfect verifier. None of this holds during deployment, where each perturbation sees its own stream of requests, decodes with sampling, and is scored by rewards that can be wrong. The primary question we aim to answer in this blog is therefore&#8288;&mdash;<strong>can ES still learn effectively under the conditions encountered during deployment?</strong></p>
 <p>And to our surprise, we find that it does!</p>
 <p>Our main findings are as follows:</p>
 <ul class="bullets">
@@ -101,7 +101,7 @@
 </ol>
 <p>The fundamental idea behind <em>population serving</em> is grounded in why zeroth-order gradient methods work in the first place. In zeroth-order learning, each perturbation casts a vote in the direction towards which a deployed model should move to optimize a reward function (<a class="cite" href="#ref-salimans2017es" data-key="salimans2017es">Salimans et al., 2017</a>). The merge step is a simple linear combination of perturbative noise, weighted by the z-scored rewards for each perturbation as shown below:</p>
 <div class="eq key" id="eq-es-update"><div class="eq-body"><script type="math/tex; mode=display">\boxed{\theta_{t+1} = \theta_t + \frac{\alpha}{N} \sum_{i=1}^{N} Z_{t,i}\, \epsilon_{t,i}}</script></div><span class="eq-num">(1)</span></div>
-<p>Here \(\theta_t\) is the current source model, \(\epsilon_{t,i} \sim \mathcal{N}(0, I)\) is the noise that defined the \(i\)-th served perturbation (\(\theta_{t,i} = \theta_t + \sigma\epsilon_{t,i}\)), \(Z_{t,i}\) is that perturbation's reward z-scored across the population of \(N\), and \(\alpha\) is the effective learning rate.</p>
+<p>Here \(\theta_t\) is the current source model, \(\epsilon_{t,i} \sim \mathcal{N}(0, I)\) is the noise that defined the <span class="nw">\(i\)-th</span> served perturbation <span class="nw">(\(\theta_{t,i} = \theta_t + \sigma\epsilon_{t,i}\)),</span> \(Z_{t,i}\) is that perturbation's reward z-scored across the population of <span class="nw">\(N\),</span> and \(\alpha\) is the effective learning rate.</p>
 <blockquote class="pull"><p>If a learning recipe as simple as above can improve models reliably, we believe it would be a complete waste to <span class="ul">not</span> do <em>population serving.</em></p></blockquote>
 <p>In the coming sections, we show that models can be improved through ES under the population serving paradigm without perfect verifiers and with minimal forgetting.</p>
 </section>
@@ -138,14 +138,14 @@
 }_{\text{sampling luck}}
 +
 \zeta_t,</script></div><span class="eq-num">(2)</span></div>
-<p>The above equation shows that the update \(\Delta \theta_t\) is approximately equal to the average gradient signal and some additional noise terms due to data and sampling luck. A detailed derivation and explanation of each of the terms in the above equation can be found in the appendix. This raises a direct empirical question&mdash;<strong>can ES still learn effectively under heterogeneous data streams?</strong></p>
-<p><span class="runin">Datasets:</span> To avoid confounding the effect of heterogeneous data streams with evaluator errors, we first focus on verifiable settings with perfect evaluators, leaving the effects of imperfect evaluation to the next section. Studying heterogeneous data streams requires a large number of distinct samples, since no sample can be shared across perturbations or repeated across iterations. We therefore use synthetic datasets, allowing us to scale to millions of data samples without introducing evaluator errors. We use two tasks: <em>Countdown</em> (<a class="cite" href="#ref-qiu2026es" data-key="qiu2026es">Qiu et al., 2026</a>), where the model is given a few numbers and a target, and must combine the numbers using basic arithmetic operations (\(+\), \(-\), \(\times\), \(\div\)) into an expression that equals the target, and <em>Agentic Sudoku</em> (<a class="cite" href="#ref-zheng2026agentic" data-key="zheng2026agentic">Zheng et al., 2026</a>), where the model interacts with an environment over multiple turns to solve a Sudoku puzzle. These tasks allow us to study whether ES can learn under heterogeneous data streams in both single-response generation and multi-turn agentic settings.</p>
+<p>The above equation shows that the update \(\Delta \theta_t\) is approximately equal to the average gradient signal and some additional noise terms due to data and sampling luck. A detailed derivation and explanation of each of the terms in the above equation can be found in the appendix. This raises a direct empirical question&#8288;&mdash;<strong>can ES still learn effectively under heterogeneous data streams?</strong></p>
+<p><span class="runin">Datasets:</span> To avoid confounding the effect of heterogeneous data streams with evaluator errors, we first focus on verifiable settings with perfect evaluators, leaving the effects of imperfect evaluation to the next section. Studying heterogeneous data streams requires a large number of distinct samples, since no sample can be shared across perturbations or repeated across iterations. We therefore use synthetic datasets, allowing us to scale to millions of data samples without introducing evaluator errors. We use two tasks: <em>Countdown</em> (<a class="cite" href="#ref-qiu2026es" data-key="qiu2026es">Qiu et al., 2026</a>), where the model is given a few numbers and a target, and must combine the numbers using basic arithmetic operations <span class="nw">(\(+\),</span> <span class="nw">\(-\),</span> <span class="nw">\(\times\),</span> <span class="nw">\(\div\))</span> into an expression that equals the target, and <em>Agentic Sudoku</em> (<a class="cite" href="#ref-zheng2026agentic" data-key="zheng2026agentic">Zheng et al., 2026</a>), where the model interacts with an environment over multiple turns to solve a Sudoku puzzle. These tasks allow us to study whether ES can learn under heterogeneous data streams in both single-response generation and multi-turn agentic settings.</p>
 <figure class="fig grid-2 medium" data-label="fig:main-results" id="fig-main-results">
 <div class="panels">
 <div class="panel" data-sublabel="fig:main-countdown" data-letter="a"><img src="figures/countdown_llama31_8b.svg" width="461" height="310" alt="Countdown learning curves for Llama-3.1-8B-Instruct under the Fixed (ES), Fresh, Hetero and Deployment data streams" loading="lazy"><div class="sub">(a) Countdown, Llama-3.1-8B-Instruct</div></div>
 <div class="panel" data-sublabel="fig:main-sudoku" data-letter="b"><img src="figures/sudoku_q35_9b.svg" width="461" height="310" alt="Agentic Sudoku learning curves for Qwen3.5-9B under the four data streams" loading="lazy"><div class="sub">(b) Agentic Sudoku, Qwen3.5-9B</div></div>
 </div>
-<figcaption><span class="fignum">Figure 3.</span> <strong>Population serving learns under deployment conditions.</strong> Held-out score over ES iterations on two tasks of increasing realism: Countdown (single-turn arithmetic) and Agentic Sudoku (a multi-turn environment with a binary reward for a fully solved grid). Each curve is one data regime: <em>Fixed</em> reuses the same batch every iteration, as in prior ES work; <em>Fresh</em> draws a new batch each iteration shared by all perturbations; <em>Hetero</em> gives every perturbation its own batch; and <em>Deployment</em> is the heterogeneous data stream with sampling based decoding&mdash;the setting a deployed population actually runs in.</figcaption>
+<figcaption><span class="fignum">Figure 3.</span> <strong>Population serving learns under deployment conditions.</strong> Held-out score over ES iterations on two tasks of increasing realism: Countdown (single-turn arithmetic) and Agentic Sudoku (a multi-turn environment with a binary reward for a fully solved grid). Each curve is one data regime: <em>Fixed</em> reuses the same batch every iteration, as in prior ES work; <em>Fresh</em> draws a new batch each iteration shared by all perturbations; <em>Hetero</em> gives every perturbation its own batch; and <em>Deployment</em> is the heterogeneous data stream with sampling based decoding&#8288;&mdash;the setting a deployed population actually runs in.</figcaption>
 </figure>
 <p><span class="runin">Results.</span> We follow the experimental setup of <a class="cite" href="#ref-qiu2026es" data-key="qiu2026es">Qiu et al. (2026)</a>, where every update creates 30 perturbations of the weights, and each perturbation is scored on 200 problems. The only thing we change is the source of data streams as described previously. The results can be seen in Figure <a class="xref figref" href="#fig-main-results">3</a>. <strong>We see that every model learns in every setting, including the heterogeneous data streams setting with sampling based decoding.</strong> For Countdown, under deployment settings (heterogeneous data streams with sampling), Llama-3.1 climbs from 0.10 to 0.58 on 2,000 held-out problems it never trains on. Giving each perturbation its own data barely hurts, although this changes from model to model (appendix). Therefore, sampling and data luck does cost a little performance, but not enough to prevent learning. It is also the same story with multi-turn agentic Sudoku tasks as shown in Figure <a class="xref figref" href="#fig-main-results">3b</a>.</p>
 <h3 id="sec-bigbench" data-label="sec-bigbench" data-num="2.1"><span class="secnum">2.1</span>Massive Multi-Task Learning with 78 Tasks at Once</h3>
@@ -164,8 +164,8 @@
 </section>
 <section class="sec" id="sec-verifiers" data-label="sec-verifiers" data-num="3">
 <h2><span class="secnum">3</span>Learning With Imperfect Verifiers</h2>
-<p>We expect that learning during inference from deployment traffic will mean learning from rewards that come from reward models, LLM judges, unit tests or user feedback, and each of them can be wrong in different ways. This raises an important research question&mdash;<em>how well ES learns with noisy evaluators</em>. Eventually, we also expect judge errors to get spotted, through audits or user complaints, and then patched, which brings an important and practical follow-up&mdash;<em>whether the lost performance is recovered once a verifier error is spotted and fixed</em>. Answering both questions is important to assess the practicality of learning during inference. We simulate a few possible judge errors using the Countdown dataset with Qwen2.5-7B-Instruct under the heterogeneous data stream.</p>
-<p><span class="runin">Modeling judge errors.</span> A Countdown answer earns one of three rewards: 0 if it cannot be read, 0.1 if it is well formatted but wrong, and 1.1 if it is correct (<a class="cite" href="#ref-qiu2026es" data-key="qiu2026es">Qiu et al., 2026</a>). We model three ways a judge can fail. First, we have a <em>random-error judge</em>, which gets each verdict wrong with probability \(p\), replacing the true reward with one of the other two at random. Second, a <em>reward-biased judge</em>, which is a stingy reward model which always returns a 0 reward regardless of the answer with probability \(p\). Third, an <em>input-biased judge</em>, that has a blind spot on every problem whose target lies between 60 and 80, about a fifth of all problems. It consistently swaps the rewards of right and wrong answers. These three errors span the basic ways any label or reward can be corrupted&mdash;completely at random, in a direction that depends on the true reward, or an error tied to the data sample respectively.</p>
+<p>We expect that learning during inference from deployment traffic will mean learning from rewards that come from reward models, LLM judges, unit tests or user feedback, and each of them can be wrong in different ways. This raises an important research question&#8288;&mdash;<em>how well ES learns with noisy evaluators</em>. Eventually, we also expect judge errors to get spotted, through audits or user complaints, and then patched, which brings an important and practical follow-up&#8288;&mdash;<em>whether the lost performance is recovered once a verifier error is spotted and fixed</em>. Answering both questions is important to assess the practicality of learning during inference. We simulate a few possible judge errors using the Countdown dataset with Qwen2.5-7B-Instruct under the heterogeneous data stream.</p>
+<p><span class="runin">Modeling judge errors.</span> A Countdown answer earns one of three rewards: 0 if it cannot be read, 0.1 if it is well formatted but wrong, and 1.1 if it is correct (<a class="cite" href="#ref-qiu2026es" data-key="qiu2026es">Qiu et al., 2026</a>). We model three ways a judge can fail. First, we have a <em>random-error judge</em>, which gets each verdict wrong with probability <span class="nw">\(p\),</span> replacing the true reward with one of the other two at random. Second, a <em>reward-biased judge</em>, which is a stingy reward model which always returns a 0 reward regardless of the answer with probability <span class="nw">\(p\).</span> Third, an <em>input-biased judge</em>, that has a blind spot on every problem whose target lies between 60 and 80, about a fifth of all problems. It consistently swaps the rewards of right and wrong answers. These three errors span the basic ways any label or reward can be corrupted&#8288;&mdash;completely at random, in a direction that depends on the true reward, or an error tied to the data sample respectively.</p>
 <figure class="fig grid-2 medium" data-label="fig:judge-errors" id="fig-judge-errors">
 <div class="panels">
 <div class="panel" data-sublabel="fig:judge-error-rate" data-letter="a"><img src="figures/judge_error_rate.svg" width="461" height="310" alt="Final dev score against the corruption rate p for the random-error and reward-biased judges" loading="lazy"><div class="sub">(a) Random-Error and Reward-Biased Judges</div></div>
@@ -173,6 +173,7 @@
 </div>
 <figcaption><span class="fignum">Figure 5.</span> What judge errors cost (Qwen2.5-7B-Instruct on Countdown). (a) Final test score for Random-Error and Reward-Biased Judges against the corruption rate \(p\) after training for 500 iterations. (b) Input-biased judge, scored on the corrupted targets (60&ndash;80) and on all others.</figcaption>
 </figure>
+<p><span class="runin">ES learns from noisy rewards, as long as there is a learning signal.</span> Figure <a class="xref figref" href="#fig-judge-errors">5</a>(a) presents the final scores after training Qwen2.5-7B-Instruct on Countdown with respective judge errors for 500 iterations. We see that ES tolerates a surprising amount of judge error (learning curves for every judge are shown in Figure&nbsp;<a class="xref figref" href="#fig-judge-curves">11</a> in appendix). With half of all verdicts wrong (p = 0.5) for the random-error judge (note that completely random signals happen at p = 2/3 for this setting), the model still climbs from 0.36 to 0.58, keeping 72% of the gain it makes with a perfect judge (0.665). The performance for the untrained model is shown by a dotted horizontal line. The reward-biased judge is even easier to live with: zeroing 80% of all rewards still leaves 80% of the gain (0.60).</p>
 <figure class="fig grid-3" data-label="fig:judge-fix" id="fig-judge-fix">
 <div class="panels">
 <div class="panel" data-sublabel="fig:judge-fix-random80" data-letter="a"><img src="figures/judge_fix_random80.svg" width="461" height="310" alt="Dev score when an 80 percent random-error judge is fixed at iteration 150" loading="lazy"><div class="sub">(a) Random-Error, \(p = 80\%\)</div></div>
@@ -181,7 +182,6 @@
 </div>
 <figcaption><span class="fignum">Figure 6.</span> Fixing the judge at iteration 150 (solid), compared with keeping the noisy judge (dashed) and a clean judge throughout (gray). In (c), the dashed run is an independent draw of the same judge.</figcaption>
 </figure>
-<p><span class="runin">ES learns from noisy rewards, as long as there is a learning signal.</span> Figure <a class="xref figref" href="#fig-judge-errors">5</a>(a) presents the final scores after training Qwen2.5-7B-Instruct on Countdown with respective judge errors for 500 iterations. We see that ES tolerates a surprising amount of judge error (learning curves for every judge are shown in Figure&nbsp;<a class="xref figref" href="#fig-judge-curves">11</a> in appendix). With half of all verdicts wrong (p = 0.5) for the random-error judge (note that completely random signals happen at p = 2/3 for this setting), the model still climbs from 0.36 to 0.58, keeping 72% of the gain it makes with a perfect judge (0.665). The performance for the untrained model is shown by a dotted horizontal line. The reward-biased judge is even easier to live with: zeroing 80% of all rewards still leaves 80% of the gain (0.60).</p>
 <p><span class="runin">Fixing the judge recovers most of the loss.</span> In practice, we expect the judge errors to eventually get spotted and then patched. An important question for continually learning systems is if the loss of performance is recoverable once the judge errors are spotted. To find out, we train with a noisy judge for 150 iterations and then switch to the clean one, with no rollback to an earlier checkpoint (Figure&nbsp;<a class="xref figref" href="#fig-judge-fix">6</a>). The hardest case is the 80% random-error judge, which prefers wrong answers and has dragged the model from 0.36 down to 0.14 by the time it is fixed. Over the next 150 iterations the model climbs back to 0.58, close to the 0.65 of a run that had a clean judge all along, while a run that keeps the faulty judge ends at 0.05. The milder judges recover too, ending at 0.60 (50% random errors) and 0.62 (80% zeroed rewards), within about 0.04 and 0.02 of the clean run. <strong>This shows that ES does not need a perfect verifier, only one that leans the right way on average, and most of the harm from a bad verifier is undone once it is fixed.</strong></p>
 </section>
 <section class="sec" id="sec-forgetting" data-label="sec-forgetting" data-num="4">
@@ -240,14 +240,14 @@
 <div class="appendix-divider" id="appendix"><span>Appendix</span></div>
 <section class="sec appx" id="app-es-data-streams" data-label="app:es-data-streams" data-num="A">
 <h2><span class="secnum">A</span>Detailed Derivation of ES under Data Streams</h2>
-<p>In this appendix, we provide the full first-order derivations for the fixed, fresh, and heterogeneous data regimes introduced in the main text. Throughout, perturbations are sampled independently as \(\epsilon_{t,i}\sim\mathcal{N}(0,I)\) and resampled at every iteration. We retain terms up to first order in the perturbation scale \(\sigma\), writing higher-order terms as \(\mathcal{O}(\sigma^2)\).</p>
+<p>In this appendix, we provide the full first-order derivations for the fixed, fresh, and heterogeneous data regimes introduced in the main text. Throughout, perturbations are sampled independently as \(\epsilon_{t,i}\sim\mathcal{N}(0,I)\) and resampled at every iteration. We retain terms up to first order in the perturbation scale <span class="nw">\(\sigma\),</span> writing higher-order terms as <span class="nw">\(\mathcal{O}(\sigma^2)\).</span></p>
 <details class="appx-sub" id="app-fixed-data" data-label="app:fixed-data" data-num="A.1">
 <summary><h3><span class="secnum">A.1</span>Fixed-Data Regime</h3></summary>
 <p>In the fixed-data regime, every perturbation is evaluated on the same batch \(B\) at every iteration. Under greedy decoding, the reward of perturbation \(i\) at iteration \(t\) is</p>
 <div class="eq" id="eq-3"><div class="eq-body"><script type="math/tex; mode=display">R_{t,i}
 =
 f_B(\theta_t+\sigma\epsilon_{t,i}).</script></div><span class="eq-num">(3)</span></div>
-<p>Taking a first-order Taylor expansion around \(\theta_t\),</p>
+<p>Taking a first-order Taylor expansion around <span class="nw">\(\theta_t\),</span></p>
 <div class="eq" id="eq-4"><div class="eq-body"><script type="math/tex; mode=display">R_{t,i}
 =
 f_B(\theta_t)
@@ -318,7 +318,7 @@ f_B(\theta_t)
 (\epsilon_{t,i}-\bar\epsilon_t)
 (\epsilon_{t,i}-\bar\epsilon_t)^\top,
 \end{aligned}</script></div><span class="eq-num">(9)</span></div>
-<p>because \(\sum_i(\epsilon_{t,i}-\bar\epsilon_t)=0\). Defining the empirical perturbation covariance</p>
+<p>because <span class="nw">\(\sum_i(\epsilon_{t,i}-\bar\epsilon_t)=0\).</span> Defining the empirical perturbation covariance</p>
 <div class="eq" id="eq-10"><div class="eq-body"><script type="math/tex; mode=display">\Sigma_{\epsilon,t}
 \equiv
 \frac{1}{N}
@@ -337,7 +337,7 @@ f_B(\theta_t)
 <div class="eq" id="eq-12"><div class="eq-body"><script type="math/tex; mode=display">\mathbb{E}[\Sigma_{\epsilon,t}]
 =
 \left(1-\frac{1}{N}\right)I,</script></div><span class="eq-num">(12)</span></div>
-<p>and \(\Sigma_{\epsilon,t}\rightarrow I\) as the population size grows. For finite \(N\), however, the empirical covariance differs from the identity; in particular, when \(N\ll d\), it has rank at most \(N-1\). Thus, even in the fixed-data regime, an individual ES update is a finite-population estimate of the gradient direction.</p>
+<p>and \(\Sigma_{\epsilon,t}\rightarrow I\) as the population size grows. For finite <span class="nw">\(N\),</span> however, the empirical covariance differs from the identity; in particular, when <span class="nw">\(N\ll d\),</span> it has rank at most <span class="nw">\(N-1\).</span> Thus, even in the fixed-data regime, an individual ES update is a finite-population estimate of the gradient direction.</p>
 <p>Reward normalization also determines the magnitude of the update. Under the same first-order approximation,</p>
 <div class="eq" id="eq-13"><div class="eq-body"><script type="math/tex; mode=display">\begin{aligned}
 s_t^2
@@ -363,7 +363,7 @@ s_t^2
 \nabla f_B(\theta_t)
 }
 }.</script></div><span class="eq-num">(14)</span></div>
-<p>As \(N\rightarrow\infty\) and \(\Sigma_{\epsilon,t}\rightarrow I\),</p>
+<p>As \(N\rightarrow\infty\) and <span class="nw">\(\Sigma_{\epsilon,t}\rightarrow I\),</span></p>
 <div class="eq" id="eq-15"><div class="eq-body"><script type="math/tex; mode=display">\Delta\theta_t
 \longrightarrow
 \alpha
@@ -382,7 +382,7 @@ s_t^2
 \Sigma_{\epsilon,t}
 \nabla f_B(\theta_t).
 }</script></div><span class="eq-num">(16)</span></div>
-<p>Although the same batch \(B\) is reused at every iteration, the gradient cannot be taken outside the summation because it is evaluated at the evolving parameters \(\theta_t\).</p>
+<p>Although the same batch \(B\) is reused at every iteration, the gradient cannot be taken outside the summation because it is evaluated at the evolving parameters <span class="nw">\(\theta_t\).</span></p>
 </details>
 <details class="appx-sub" id="app-fresh-data" data-label="app:fresh-data" data-num="A.2">
 <summary><h3><span class="secnum">A.2</span>Fresh-Data Regime</h3></summary>
@@ -400,7 +400,7 @@ f_{B_t}(\theta_t)
 \nabla f_{B_t}(\theta_t)
 +
 \mathcal{O}(\sigma^2).</script></div><span class="eq-num">(18)</span></div>
-<p>Because the same \(B_t\) is shared by all perturbations within iteration \(t\), the population mean has exactly the same structure as in the fixed regime,</p>
+<p>Because the same \(B_t\) is shared by all perturbations within iteration <span class="nw">\(t\),</span> the population mean has exactly the same structure as in the fixed regime,</p>
 <div class="eq" id="eq-19"><div class="eq-body"><script type="math/tex; mode=display">\bar R_t
 \approx
 f_{B_t}(\theta_t)
@@ -421,7 +421,7 @@ f_{B_t}(\theta_t)
 \Sigma_{\epsilon,t}
 \nabla f_{B_t}(\theta_t).
 }</script></div><span class="eq-num">(21)</span></div>
-<p>Thus, the fixed and fresh regimes are identical in form within a single iteration. The distinction appears across iterations: fixed-data ES repeatedly optimizes the same empirical reward function \(f_B\), whereas fresh-data ES follows the gradients of newly sampled batches.</p>
+<p>Thus, the fixed and fresh regimes are identical in form within a single iteration. The distinction appears across iterations: fixed-data ES repeatedly optimizes the same empirical reward function <span class="nw">\(f_B\),</span> whereas fresh-data ES follows the gradients of newly sampled batches.</p>
 <p>Summing over \(T\) iterations,</p>
 <div class="eq" id="eq-app-fresh-cumulative"><div class="eq-body"><script type="math/tex; mode=display">\boxed{
 \theta_T-\theta_0
@@ -431,7 +431,7 @@ f_{B_t}(\theta_t)
 \Sigma_{\epsilon,t}
 \nabla f_{B_t}(\theta_t).
 }</script></div><span class="eq-num">(22)</span></div>
-<p>If \(B_t\) is independently sampled from a deployment distribution \(\mathcal{D}\), define</p>
+<p>If \(B_t\) is independently sampled from a deployment distribution <span class="nw">\(\mathcal{D}\),</span> define</p>
 <div class="eq" id="eq-23"><div class="eq-body"><script type="math/tex; mode=display">F(\theta)
 \equiv
 \mathbb{E}_{B\sim\mathcal{D}}
@@ -449,7 +449,7 @@ f_{B_t}(\theta_t)
 </details>
 <details class="appx-sub" id="app-heterogeneous-data" data-label="app:heterogeneous-data" data-num="A.3">
 <summary><h3><span class="secnum">A.3</span>Heterogeneous-Data Regime</h3></summary>
-<p>In the heterogeneous regime, each perturbation receives its own batch \(B_{t,i}\). We additionally allow stochastic decoding. Let \(f_{B_{t,i}}(\theta)\) denote the expected reward on batch \(B_{t,i}\), and let \(\eta_{t,i}\) denote the deviation of the realized reward from this expectation due to stochastic generation. By construction,</p>
+<p>In the heterogeneous regime, each perturbation receives its own batch <span class="nw">\(B_{t,i}\).</span> We additionally allow stochastic decoding. Let \(f_{B_{t,i}}(\theta)\) denote the expected reward on batch <span class="nw">\(B_{t,i}\),</span> and let \(\eta_{t,i}\) denote the deviation of the realized reward from this expectation due to stochastic generation. By construction,</p>
 <div class="eq" id="eq-25"><div class="eq-body"><script type="math/tex; mode=display">\mathbb{E}
 \left[
 \eta_{t,i}
@@ -525,7 +525,7 @@ f_{B_{t,i}}(\theta_t)
 -
 \frac{1}{N}\sum_{j=1}^{N}
 f_{B_{t,j}}(\theta_t)</script></div><span class="eq-num">(31)</span></div>
-<p>as the <em>data luck</em> of perturbation \(i\). It captures whether that perturbation happens to receive a batch on which the current unperturbed model performs better or worse than on the batches received by the rest of the population.</p>
+<p>as the <em>data luck</em> of perturbation <span class="nw">\(i\).</span> It captures whether that perturbation happens to receive a batch on which the current unperturbed model performs better or worse than on the batches received by the rest of the population.</p>
 <p>Similarly,</p>
 <div class="eq" id="eq-32"><div class="eq-body"><script type="math/tex; mode=display">\nu_{t,i}
 \equiv
@@ -537,7 +537,7 @@ f_{B_{t,j}}(\theta_t)</script></div><span class="eq-num">(31)</span></div>
 \sum_{i=1}^{N}\nu_{t,i}
 =
 0.</script></div><span class="eq-num">(33)</span></div>
-<p>This centering explains why the corresponding update depends on perturbation directions relative to the population mean. More generally, for any centered scalar weights \(w_{t,i}\) satisfying \(\sum_i w_{t,i}=0\),</p>
+<p>This centering explains why the corresponding update depends on perturbation directions relative to the population mean. More generally, for any centered scalar weights \(w_{t,i}\) satisfying <span class="nw">\(\sum_i w_{t,i}=0\),</span></p>
 <div class="eq" id="eq-34"><div class="eq-body"><script type="math/tex; mode=display">\sum_{i=1}^{N}
 w_{t,i}\epsilon_{t,i}
 =
@@ -700,7 +700,7 @@ w_{t,i}
 <div class="panel" data-sublabel="fig:bigbench-llama31-8b" data-letter="b"><img src="figures/bigbench_llama31_8b.svg" width="461" height="310" alt="BIG-Bench dev score for Llama-3.1-8B-Instruct, Hetero versus Deployment" loading="lazy"><div class="sub">(b) Llama-3.1-8B-Instruct</div></div>
 <div class="panel" data-sublabel="fig:bigbench-olmo2-7b" data-letter="c"><img src="figures/bigbench_olmo2_7b.svg" width="461" height="310" alt="BIG-Bench dev score for OLMo-2-7B-Instruct, Hetero versus Deployment" loading="lazy"><div class="sub">(c) OLMo-2-7B-Instruct</div></div>
 </div>
-<figcaption><span class="fignum">Figure 10.</span> BIG-Bench: a single model trained on 78 BIG-Bench tasks at once. Dev is the mean reward (exact match or chrF, depending on the task) with greedy decoding on 7,261 held-out examples from the same 78 tasks, over 500 ES iterations. Llama-3.1 uses a step size of \(2\times10^{-4}\), the other two models \(5\times10^{-4}\). Numbers at the right edge are the mean of each run's last six evaluations.</figcaption>
+<figcaption><span class="fignum">Figure 10.</span> BIG-Bench: a single model trained on 78 BIG-Bench tasks at once. Dev is the mean reward (exact match or chrF, depending on the task) with greedy decoding on 7,261 held-out examples from the same 78 tasks, over 500 ES iterations. Llama-3.1 uses a step size of <span class="nw">\(2\times10^{-4}\),</span> the other two models <span class="nw">\(5\times10^{-4}\).</span> Numbers at the right edge are the mean of each run's last six evaluations.</figcaption>
 </figure>
 <figure class="fig tbl" data-label="tab:bigbench-categories" id="tab-bigbench-categories">
 <div class="tbl-wrap"><table>
@@ -752,7 +752,7 @@ w_{t,i}
 <div class="panel"><img src="figures/awd_bigbench_forgetting.svg" width="461" height="310" alt="BIG-Bench average change from the base model with and without AWD, Llama-3.1-8B" loading="lazy"></div>
 <div class="panel"><img src="figures/awd_bigbench_drift.svg" width="461" height="310" alt="BIG-Bench weight drift with and without AWD, Llama-3.1-8B" loading="lazy"></div>
 </div>
-<figcaption><span class="fignum">Figure 12.</span> Learning with and without AWD. Left to right: dev score; average change from the base model across GSM8K, MMLU and IFEval, measured every 50 iterations; and weight drift \(\|\theta-\theta_0\|/\|\theta_0\|\).</figcaption>
+<figcaption><span class="fignum">Figure 12.</span> Learning with and without AWD. Left to right: dev score; average change from the base model across GSM8K, MMLU and IFEval, measured every 50 iterations; and weight drift <span class="nw">\(\|\theta-\theta_0\|/\|\theta_0\|\).</span></figcaption>
 </figure>
 </details>
 </section>

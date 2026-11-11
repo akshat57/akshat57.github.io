@@ -210,7 +210,9 @@ blockquote.pull em { font-style: normal; color: var(--accent-ink); }
 .reflist li { margin: 0 0 14px; scroll-margin-top: 40px; }
 .reflist li:target { background: var(--accent-wash); box-shadow: 0 0 0 8px var(--accent-wash); border-radius: 4px; }
 .ref-ti { color: var(--ink); font-weight: 600; }
-.ref-link { font-family: var(--mono); font-size: 13px; word-break: break-all; }
+.ref-link { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+@media (max-width: 520px) { .ref-link { white-space: normal; overflow-wrap: anywhere; } }
+.nw { white-space: nowrap; }   /* short inline math kept together with its bracket or punctuation */
 .cite-text { font-size: 15.5px; line-height: 1.6; color: var(--muted); }
 .bibtex { position: relative; margin: 1em 0 0; }
 .bibtex pre { margin: 0; overflow-x: auto; background: var(--wash); border-radius: 14px; padding: 18px 20px; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; color: var(--ink); }
