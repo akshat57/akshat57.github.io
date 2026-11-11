@@ -146,7 +146,7 @@
 <p>The results can be seen in Figure <a class="xref figref" href="#fig-main-bigbench">4</a>. We find that ES learns in this massive and messy multi-task setting with non-uniform task distributions evaluated with widely different metrics. The task category-wise numbers for BIG-Bench can be found in the appendix.</p>
 <div class="takeaway takeaway-plain"><div class="takeaway-body">
 <p><strong>Unlike GRPO, ES learns with a group size of 1.</strong></p>
-<p>In deployment, every query gets exactly one answer. Even if we allow gradient-based learning during deployment, GRPO still cannot learn during deployment without parallel rollouts of the same prompt. Our results in this section are striking because they show that ES learns even with a group size of 1, despite the added data luck and sampling luck terms in every update.</p>
+<p>In deployment, every query gets exactly one rollout. Even if we allow gradient-based learning during deployment, GRPO still cannot learn during deployment without parallel rollouts of the same prompt. Our results in this section are striking because they show that ES learns even with a group size of 1, despite the added data luck and sampling luck terms in every update.</p>
 </div></div>
 </section>
 <section class="sec" id="sec-verifiers" data-label="sec-verifiers" data-num="3">
