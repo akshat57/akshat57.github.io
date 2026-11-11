@@ -293,7 +293,7 @@
   });
 })();
 
-/* Design B: the Contents button (the only navigation) and, for the preview, the accent colour picker. */
+/* Design B: the Contents button (the only navigation). */
 (function () {
   var btn = document.getElementById("toc-btn"), panel = document.getElementById("toc-panel");
   if (btn && panel) {
@@ -305,21 +305,6 @@
     });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") set(false); });
   }
-  var swatches = Array.prototype.slice.call(document.querySelectorAll(".theme-dock button"));
-  var root = document.documentElement;
-  var mark = function () {
-    var cur = root.getAttribute("data-accent") || "cobalt";
-    swatches.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-accent") === cur ? "true" : "false"); });
-  };
-  swatches.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var a = b.getAttribute("data-accent");
-      if (a === "cobalt") root.removeAttribute("data-accent"); else root.setAttribute("data-accent", a);
-      try { localStorage.setItem("ps-accent", a); } catch (e) {}
-      mark();
-    });
-  });
-  mark();
 
   /* Long display equations take the wide measure instead of scrolling inside the text column. */
   function fitEquations() {
