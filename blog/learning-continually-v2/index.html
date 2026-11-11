@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,400..800;1,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/vendor/katex/katex.min.css?v=3f94e1b737">
-<link rel="stylesheet" href="assets/css/style.css?v=a8ca789cf6">
+<link rel="stylesheet" href="assets/css/style.css?v=a595e17950">
 </head>
 <body>
 <a class="skip" href="#sec-intro">Skip to the post</a>
@@ -200,17 +200,6 @@
 <li>Infrastructure challenges: Serving perturbations of the same model may add additional infrastructure challenges which need to be solved, including challenges around quantized serving, prefix caching and effective routing and reward attribution.</li>
 </ul>
 </section>
-<section class="sec refs" id="references">
-<h2>References</h2>
-<ol class="reflist">
-<li id="ref-abdi2026forgetting"><span class="ref-au">Immanuel Abdi, Akshat Gupta, Micah Mok, Alex Lu, Nicholas Lee, and Gopala Anumanchipalli.</span> <span class="ref-ti">Evolutionary Strategies at Scale lead to Catastrophic Forgetting.</span> <em>Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 194–204, San Diego, California, United States. Association for Computational Linguistics</em>, 2026. <a class="ref-link" href="https://doi.org/10.18653/v1/2026.acl-short.18" target="_blank" rel="noopener">doi.org/10.18653/v1/2026.acl-short.18</a></li>
-<li id="ref-qiu2026es"><span class="ref-au">Xin Qiu, Yulu Gan, Conor F. Hayes, Qiyao Liang, Yinggan Xu, Roberto Dailey, Elliot Meyerson, Babak Hodjat, and Risto Miikkulainen.</span> <span class="ref-ti">Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning.</span> <em>Proceedings of the 43rd International Conference on Machine Learning</em>, 2026. arXiv:2509.24372. <a class="ref-link" href="https://arxiv.org/abs/2509.24372" target="_blank" rel="noopener">arxiv.org/abs/2509.24372</a></li>
-<li id="ref-salimans2017es"><span class="ref-au">Tim Salimans, Jonathan Ho, Xi Chen, Szymon Sidor, and Ilya Sutskever.</span> <span class="ref-ti">Evolution Strategies as a Scalable Alternative to Reinforcement Learning.</span> 2017. arXiv:1703.03864. <a class="ref-link" href="https://arxiv.org/abs/1703.03864" target="_blank" rel="noopener">arxiv.org/abs/1703.03864</a></li>
-<li id="ref-schweighofer2026overcoming"><span class="ref-au">Kajetan Schweighofer, Conor F. Hayes, Roberto Dailey, Risto Miikkulainen, and Xin Qiu.</span> <span class="ref-ti">Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies.</span> arXiv preprint arXiv:2605.30148, 2026. <a class="ref-link" href="https://arxiv.org/abs/2605.30148" target="_blank" rel="noopener">arxiv.org/abs/2605.30148</a></li>
-<li id="ref-srivastava2022beyond"><span class="ref-au">Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid, Adam Fisch, Adam R. Brown, Adam Santoro, Aditya Gupta, Adrià Garriga-Alonso, and others.</span> <span class="ref-ti">Beyond the imitation game: Quantifying and extrapolating the capabilities of language models.</span> arXiv preprint arXiv:2206.04615, 2022. <a class="ref-link" href="https://arxiv.org/abs/2206.04615" target="_blank" rel="noopener">arxiv.org/abs/2206.04615</a></li>
-<li id="ref-zheng2026agentic"><span class="ref-au">Zhi Zheng, Rongsheng Chen, Yunpeng Ba, Zhenkun Wang, Yee Whye Teh, and Wee Sun Lee.</span> <span class="ref-ti">Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements.</span> arXiv preprint arXiv:2608.17310, 2026. <a class="ref-link" href="https://arxiv.org/abs/2608.17310" target="_blank" rel="noopener">arxiv.org/abs/2608.17310</a></li>
-</ol>
-</section>
 <section class="sec citation" id="citation">
 <h2>Citation</h2>
 <p>Please cite this post as:</p>
@@ -223,6 +212,17 @@
   howpublished = {\url{https://akshat57.github.io/blog/population-serving/}},
   note         = {Blog post}
 }</code></pre></div>
+</section>
+<section class="sec refs" id="references">
+<h2>References</h2>
+<ol class="reflist">
+<li id="ref-abdi2026forgetting"><span class="ref-au">Immanuel Abdi, Akshat Gupta, Micah Mok, Alex Lu, Nicholas Lee, and Gopala Anumanchipalli.</span> <span class="ref-ti">Evolutionary Strategies at Scale lead to Catastrophic Forgetting.</span> <em>Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 194–204, San Diego, California, United States. Association for Computational Linguistics</em>, 2026. <a class="ref-link" href="https://doi.org/10.18653/v1/2026.acl-short.18" target="_blank" rel="noopener">doi.org/10.18653/v1/2026.acl-short.18</a></li>
+<li id="ref-qiu2026es"><span class="ref-au">Xin Qiu, Yulu Gan, Conor F. Hayes, Qiyao Liang, Yinggan Xu, Roberto Dailey, Elliot Meyerson, Babak Hodjat, and Risto Miikkulainen.</span> <span class="ref-ti">Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning.</span> <em>Proceedings of the 43rd International Conference on Machine Learning</em>, 2026. arXiv:2509.24372. <a class="ref-link" href="https://arxiv.org/abs/2509.24372" target="_blank" rel="noopener">arxiv.org/abs/2509.24372</a></li>
+<li id="ref-salimans2017es"><span class="ref-au">Tim Salimans, Jonathan Ho, Xi Chen, Szymon Sidor, and Ilya Sutskever.</span> <span class="ref-ti">Evolution Strategies as a Scalable Alternative to Reinforcement Learning.</span> 2017. arXiv:1703.03864. <a class="ref-link" href="https://arxiv.org/abs/1703.03864" target="_blank" rel="noopener">arxiv.org/abs/1703.03864</a></li>
+<li id="ref-schweighofer2026overcoming"><span class="ref-au">Kajetan Schweighofer, Conor F. Hayes, Roberto Dailey, Risto Miikkulainen, and Xin Qiu.</span> <span class="ref-ti">Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies.</span> arXiv preprint arXiv:2605.30148, 2026. <a class="ref-link" href="https://arxiv.org/abs/2605.30148" target="_blank" rel="noopener">arxiv.org/abs/2605.30148</a></li>
+<li id="ref-srivastava2022beyond"><span class="ref-au">Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid, Adam Fisch, Adam R. Brown, Adam Santoro, Aditya Gupta, Adrià Garriga-Alonso, and others.</span> <span class="ref-ti">Beyond the imitation game: Quantifying and extrapolating the capabilities of language models.</span> arXiv preprint arXiv:2206.04615, 2022. <a class="ref-link" href="https://arxiv.org/abs/2206.04615" target="_blank" rel="noopener">arxiv.org/abs/2206.04615</a></li>
+<li id="ref-zheng2026agentic"><span class="ref-au">Zhi Zheng, Rongsheng Chen, Yunpeng Ba, Zhenkun Wang, Yee Whye Teh, and Wee Sun Lee.</span> <span class="ref-ti">Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements.</span> arXiv preprint arXiv:2608.17310, 2026. <a class="ref-link" href="https://arxiv.org/abs/2608.17310" target="_blank" rel="noopener">arxiv.org/abs/2608.17310</a></li>
+</ol>
 </section>
 <div class="appendix-divider" id="appendix"><span>Appendix</span></div>
 <section class="sec appx" id="app-es-data-streams" data-label="app:es-data-streams" data-num="A">
@@ -772,6 +772,6 @@ w_{t,i}
 <script>window.REFS = {"abdi2026forgetting": {"au": "Immanuel Abdi, Akshat Gupta, Micah Mok, et al.", "ti": "Evolutionary Strategies at Scale lead to Catastrophic Forgetting", "ve": "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 194–204, San Diego, California, United States. Association for Computational Linguistics", "yr": "2026", "url": "https://doi.org/10.18653/v1/2026.acl-short.18"}, "qiu2026es": {"au": "Xin Qiu, Yulu Gan, Conor F. Hayes, et al.", "ti": "Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning", "ve": "Proceedings of the 43rd International Conference on Machine Learning", "yr": "2026", "url": "https://arxiv.org/abs/2509.24372"}, "salimans2017es": {"au": "Tim Salimans, Jonathan Ho, Xi Chen, et al.", "ti": "Evolution Strategies as a Scalable Alternative to Reinforcement Learning", "ve": "arXiv:1703.03864", "yr": "2017", "url": "https://arxiv.org/abs/1703.03864"}, "schweighofer2026overcoming": {"au": "Kajetan Schweighofer, Conor F. Hayes, Roberto Dailey, et al.", "ti": "Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies", "ve": "arXiv preprint arXiv:2605.30148", "yr": "2026", "url": "https://arxiv.org/abs/2605.30148"}, "srivastava2022beyond": {"au": "Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, et al.", "ti": "Beyond the imitation game: Quantifying and extrapolating the capabilities of language models", "ve": "arXiv preprint arXiv:2206.04615", "yr": "2022", "url": "https://arxiv.org/abs/2206.04615"}, "zheng2026agentic": {"au": "Zhi Zheng, Rongsheng Chen, Yunpeng Ba, et al.", "ti": "Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements", "ve": "arXiv preprint arXiv:2608.17310", "yr": "2026", "url": "https://arxiv.org/abs/2608.17310"}};</script>
 <script defer src="assets/vendor/katex/katex.min.js?v=4881bfc93a"></script>
 <script defer src="assets/vendor/katex/contrib/auto-render.min.js?v=61e52860f7"></script>
-<script defer src="assets/js/main.js?v=6bb677f490"></script>
+<script defer src="assets/js/main.js?v=101e6fc210"></script>
 </body>
 </html>

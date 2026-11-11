@@ -320,4 +320,29 @@
     });
   });
   mark();
+
+  /* Long display equations take the wide measure instead of scrolling inside the text column. */
+  function fitEquations() {
+    Array.prototype.forEach.call(document.querySelectorAll(".eq"), function (eq) {
+      var body = eq.querySelector(".eq-body");
+      if (!body || body.offsetParent === null) return;   /* in a closed appendix section: measured when it opens */
+      eq.classList.remove("eq-wide");
+      if (body.scrollWidth > body.clientWidth + 1) eq.classList.add("eq-wide");
+    });
+  }
+  fitEquations();
+  window.addEventListener("load", fitEquations);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitEquations);
+  var fitT = null;
+  window.addEventListener("resize", function () { clearTimeout(fitT); fitT = setTimeout(fitEquations, 150); });
+  document.addEventListener("toggle", function (e) { if (e.target.tagName === "DETAILS" && e.target.open) fitEquations(); }, true);
+
+  /* Small screens: the corner buttons step aside while scrolling down and return on the way up. */
+  var lastY = window.scrollY;
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY;
+    if (Math.abs(y - lastY) < 8) return;
+    document.body.classList.toggle("toc-away", y > lastY && y > 200);
+    lastY = y;
+  }, { passive: true });
 })();

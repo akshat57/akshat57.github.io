@@ -24,6 +24,7 @@
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --read: 700px;
   --wide: 1040px;
+  --hero: 960px;
   --gutter: 22px;
   color-scheme: light;
 }
@@ -63,6 +64,9 @@ a:hover { color: var(--accent-ink); text-decoration-thickness: 2px; }
   .toc-btn { top: auto; bottom: 16px; right: auto; left: 16px; width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
   .toc-panel { top: auto; bottom: 70px; right: auto; left: 16px; max-height: calc(100vh - 100px); }
   .theme-dock > span { display: none; }
+  /* on small screens the corner buttons step aside while reading down and come back on the way up */
+  .toc-btn, .theme-dock { transition: transform .25s ease, opacity .25s ease; }
+  .toc-away .toc-btn[aria-expanded="false"], .toc-away .theme-dock { transform: translateY(90px); opacity: 0; pointer-events: none; }
 }
 .toc-panel { position: fixed; top: 60px; right: 16px; z-index: 45; width: min(340px, calc(100vw - 32px)); max-height: calc(100vh - 84px); overflow-y: auto; background: var(--ground); border: 1px solid var(--rule); border-radius: 16px; padding: 12px 10px; box-shadow: 0 24px 48px -24px rgba(35, 35, 46, .45); scrollbar-width: thin; }
 .toc-panel ol { list-style: none; margin: 0; padding: 0; }
@@ -76,10 +80,10 @@ a:hover { color: var(--accent-ink); text-decoration-thickness: 2px; }
 .toc-panel .sidetoc-sep { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin: 14px 0 4px 10px; }
 
 /* ---------- opening: title and authors side by side, then Figure 1 ---------- */
-.hero-inner { max-width: calc(var(--wide) + 2 * var(--gutter)); margin: 0 auto; padding: 64px var(--gutter) 0; }
+.hero-inner { max-width: calc(var(--hero) + 2 * var(--gutter)); margin: 0 auto; padding: 64px var(--gutter) 0; }
 .hero-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; }
-.hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(38px, 5.4vw, 70px); line-height: 1.02; letter-spacing: -0.022em; color: var(--ink); margin: 0; text-wrap: balance; }
-.title-kicker { display: block; margin-bottom: 14px; font-size: clamp(21px, 2.2vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; color: var(--accent-ink); }
+.hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(36px, 5vw, 62px); line-height: 1.03; letter-spacing: -0.022em; color: var(--ink); margin: 0; text-wrap: balance; }
+.title-kicker { display: block; margin-bottom: 12px; font-size: clamp(20px, 2.1vw, 27px); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; color: var(--accent-ink); }
 .title-main { display: block; }
 .byline { display: grid; grid-template-columns: max-content max-content; gap: 3px 30px; font-size: 15.5px; line-height: 1.5; }
 .byline-label { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; }
@@ -89,7 +93,7 @@ a:hover { color: var(--accent-ink); text-decoration-thickness: 2px; }
 .hero-links { display: flex; gap: 18px; margin: 16px 0 0; font-size: 14.5px; font-weight: 600; }
 .hero-links a { text-decoration: none; }
 .hero-links a:hover { text-decoration: underline; }
-.lede { font-size: 23px; line-height: 1.42; color: var(--muted); margin: 0; max-width: 27em; text-wrap: balance; }
+.lede { font-size: 22px; line-height: 1.42; color: var(--muted); margin: 0; max-width: 27em; text-wrap: balance; }
 @media (min-width: 1000px) {
   .hero-head { grid-template-columns: minmax(0, 1fr) max-content; grid-template-areas: "title title" "lede meta"; column-gap: 72px; row-gap: 32px; align-items: start; }
   .hero h1 { grid-area: title; }
@@ -106,7 +110,7 @@ a:hover { color: var(--accent-ink); text-decoration-thickness: 2px; }
 .sec > .fig { grid-column: 1 / -1; justify-self: center; width: 100%; max-width: var(--wide); }
 
 /* ---------- type ---------- */
-.sec h2 { position: relative; font-family: var(--display); font-weight: 700; font-size: 38px; line-height: 1.1; letter-spacing: -0.024em; color: var(--ink); margin: 84px 0 22px; text-wrap: balance; }
+.sec h2 { position: relative; font-family: var(--display); font-weight: 700; font-size: 35px; line-height: 1.12; letter-spacing: -0.024em; color: var(--ink); margin: 84px 0 22px; text-wrap: balance; }
 /* every section opens with the population: four dots in the perturbation colours of Figure 1 */
 .sec:not(.appx):not(.refs):not(.citation) > h2::before { content: ""; display: block; width: 64px; height: 10px; margin: 0 0 24px; background:
   radial-gradient(circle at 5px 5px, var(--p1) 0 4.4px, transparent 5px),
@@ -138,8 +142,12 @@ ol.steps li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 16
 ol.steps li strong:first-child { display: block; }
 
 /* pull quotes (the LaTeX pullquote environment) */
-blockquote.pull { margin: 2.2em 0 2.3em; padding: 0; font-family: var(--display); font-weight: 600; font-size: 29px; line-height: 1.24; letter-spacing: -0.018em; color: var(--ink); text-wrap: balance; }
-blockquote.pull::before { content: "\201C"; display: block; height: 40px; font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 96px; line-height: 1; color: var(--accent); margin-left: -4px; }
+blockquote.pull { position: relative; margin: 2.2em 0 2.3em; padding: 0 0 0 46px; font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.26; letter-spacing: -0.018em; color: var(--ink); text-wrap: balance; }
+blockquote.pull::before { content: "\201C"; position: absolute; left: -3px; top: -4px; font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 68px; line-height: 1; color: var(--accent); }
+@media (min-width: 880px) {
+  blockquote.pull { padding-left: 0; }
+  blockquote.pull::before { left: auto; right: 100%; margin-right: 12px; }   /* in the margin, like the section numbers */
+}
 blockquote.pull p { margin: 0; }
 blockquote.pull p + p { margin-top: .6em; }
 blockquote.pull em { font-style: normal; color: var(--accent-ink); }
@@ -149,6 +157,11 @@ blockquote.pull em { font-style: normal; color: var(--accent-ink); }
 .eq { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; margin: 1.5em 0; scroll-margin-top: 60px; }
 .eq-body { overflow-x: auto; overflow-y: hidden; padding: 8px 2px; }
 .eq-body .katex-display { margin: 0; }
+/* an equation too long for the text column uses the wide measure instead of scrolling (main.js adds .eq-wide) */
+.sec > .eq.eq-wide { grid-column: 1 / -1; justify-self: center; width: 100%; max-width: 900px; }
+@media (min-width: 1100px) {
+  details.appx-sub > .eq.eq-wide { width: 900px; margin-left: calc((var(--read) - 900px) / 2); }
+}
 .eq-num { font-family: var(--mono); font-size: 13.5px; color: var(--faint); font-variant-numeric: tabular-nums; }
 .katex { font-size: 1.06em; }
 .katex-display > .katex { font-size: 1.12em; }
@@ -160,12 +173,14 @@ blockquote.pull em { font-style: normal; color: var(--accent-ink); }
 
 /* ---------- figures: straight on the page, no card ---------- */
 .fig { margin: 2.6em 0 2.9em; scroll-margin-top: 28px; }
+.sec > h2 + .fig, .sec > h3 + .fig { margin-top: 1.5em; }
 .fig .panels { display: grid; gap: 14px 24px; margin: 0 auto; }
 .fig.grid-2 .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .fig.grid-3 .panels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .fig.medium .panels { max-width: 1000px; }
 .fig.single .panels { max-width: 620px; }
 .fig.single.wide .panels { max-width: 900px; }
+#fig-forgetting-overview .panels { max-width: 880px; }
 .panel { display: flex; flex-direction: column; align-items: center; min-width: 0; cursor: zoom-in; border-radius: 10px; }
 .panel img { display: block; width: 100%; height: auto; }
 .panel .sub { font-size: 14.5px; color: var(--muted); text-align: center; margin-top: 6px; }
@@ -281,6 +296,7 @@ body.lb-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .eq:target, .fig:target .panels { animation: none; }
+  .toc-btn, .theme-dock { transition: none; }
 }
 @media print {
   .progress, .toc-btn, .toc-panel, .theme-dock, .lightbox, .pop, .site-footer { display: none !important; }
