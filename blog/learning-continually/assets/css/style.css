@@ -85,10 +85,9 @@ a:hover { color: var(--accent); }
 .hero-inner { position: relative; padding: 68px 0 56px; display: grid; grid-template-columns: [full-start] minmax(var(--gutter), 1fr) [wide-start] minmax(0, var(--side)) [content-start] min(var(--read), calc(100% - 2 * var(--gutter))) [content-end] minmax(0, var(--side)) [wide-end] minmax(var(--gutter), 1fr) [full-end]; }
 .hero-text { grid-column: content-start / wide-end; }
 .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(40px, 5.3vw, 66px); line-height: 1.03; letter-spacing: -0.022em; margin: 0 0 28px; text-wrap: balance; }
-/* two-tier title: the coined term large, the explanation as a subtitle; the h1's text is the full title */
+/* two-tier title: the coined term as a lighter line above, the main title large; the h1's text is the full title */
+.title-kicker { display: block; margin-bottom: 12px; font-size: clamp(22px, 2.3vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -0.005em; color: var(--ink-2); }
 .title-main { display: block; }
-.title-sub { display: block; margin-top: 14px; font-size: clamp(22px, 2.5vw, 34px); font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink-2); text-wrap: balance; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* byline under the title: Authors | Affiliations columns, one row per author, no rules */
 .byline { display: grid; grid-template-columns: max-content max-content; gap: 3px 64px; margin: 0 0 32px; font-family: var(--sans); font-size: 15.5px; line-height: 1.5; }
