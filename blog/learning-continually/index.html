@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap">
 <link rel="stylesheet" href="assets/vendor/katex/katex.min.css?v=3f94e1b737">
-<link rel="stylesheet" href="assets/css/style.css?v=559dd1b853">
+<link rel="stylesheet" href="assets/css/style.css?v=9216f80ba5">
 </head>
 <body>
 <a class="skip" href="#sec-intro">Skip to the post</a>
@@ -159,8 +159,8 @@
 <p>Countdown and Sudoku are clean, verifiable and synthetic tasks. However, real traffic is messier. A deployed model fields requests about everything at once, and different requests call for different ways of judging an answer. So we push ES into a massively multitask setting built from BIG-Bench (<a class="cite" href="#ref-srivastava2022beyond" data-key="srivastava2022beyond">Srivastava et al., 2022</a>): a single model trained on 78 tasks simultaneously, spanning ten categories, from logic puzzles, arithmetic and code generation to multilingual question answering and social reasoning. The training pool holds 396,338 examples, and the tasks are far from uniform: the smallest has 205 training examples and the largest 43,735. They are scored in different ways too: 70 tasks by exact match, where an answer is simply right or wrong, and 8 open-ended generation tasks by chrF, which gives partial credit for how closely the output matches the reference. We keep the objective deliberately simple, a perturbation's reward is just the sum of its scores over its 200 examples, with no per-task weighting, so each task counts in proportion to how often it shows up. We specifically focus on the two heterogeneous data streams for this experiment.</p>
 <p>The results can be seen in Figure <a class="xref figref" href="#fig-main-bigbench">4</a>. We find that ES learns in this massive and messy multi-task setting with non-uniform task distributions evaluated with widely different metrics. The task category-wise numbers for BIG-Bench can be found in the appendix.</p>
 <div class="takeaway takeaway-plain"><div class="takeaway-body">
-<p><strong>One answer per query is enough.</strong></p>
-<p>In the deployment setting, every user query is answered exactly once, by one perturbation. In GRPO terms that is a group size of 1, the one setting GRPO cannot learn from: its advantage compares several answers to the same prompt, and with a single answer every advantage is zero. ES compares models instead of answers: each perturbation's reward pools 200 different queries, and the perturbations are compared with one another, which is why it can learn from deployment traffic as it arrives.</p>
+<p><strong>Unlike GRPO, ES learns with a group size of 1.</strong></p>
+<p>In deployment, every query gets exactly one answer. Even if we allow gradient-based learning during deployment, GRPO still cannot learn during deployment without parallel rollouts of the same prompt. Our results in this section are striking because they show that ES learns even with a group size of 1, despite the added data luck and sampling luck terms in every update.</p>
 </div></div>
 </section>
 <section class="sec" id="sec-verifiers" data-label="sec-verifiers" data-num="3">
