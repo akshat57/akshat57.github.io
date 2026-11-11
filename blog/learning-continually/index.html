@@ -86,7 +86,7 @@
 <p>And to our surprise, we find that it does!</p>
 <p>Our main findings are as follows:</p>
 <ul class="bullets">
-<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings.</li>
+<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings. This effectively means that ES can learn with a group size of 1 (a single response per query), the one setting where group-based methods like GRPO get no learning signal at all.</li>
 <li><strong>ES learns with imperfect verification.</strong> Even with large amounts of reward verdicts flipped at random, the model keeps most of the gain it makes with a perfect judge. More interestingly, fixing verifier errors midway during inference can recover most of the incurred loss in performance.</li>
 <li><strong>Forgetting can be contained.</strong> General-benchmark scores drop in almost every run, by up to 29 points, but anchored weight decay (<a class="cite" href="#ref-schweighofer2026overcoming" data-key="schweighofer2026overcoming">Schweighofer et al., 2026</a>) removes most of the loss at no cost to learning.</li>
 </ul>
@@ -158,6 +158,10 @@
 </figure>
 <p>Countdown and Sudoku are clean, verifiable and synthetic tasks. However, real traffic is messier. A deployed model fields requests about everything at once, and different requests call for different ways of judging an answer. So we push ES into a massively multitask setting built from BIG-Bench (<a class="cite" href="#ref-srivastava2022beyond" data-key="srivastava2022beyond">Srivastava et al., 2022</a>): a single model trained on 78 tasks simultaneously, spanning ten categories, from logic puzzles, arithmetic and code generation to multilingual question answering and social reasoning. The training pool holds 396,338 examples, and the tasks are far from uniform: the smallest has 205 training examples and the largest 43,735. They are scored in different ways too: 70 tasks by exact match, where an answer is simply right or wrong, and 8 open-ended generation tasks by chrF, which gives partial credit for how closely the output matches the reference. We keep the objective deliberately simple, a perturbation's reward is just the sum of its scores over its 200 examples, with no per-task weighting, so each task counts in proportion to how often it shows up. We specifically focus on the two heterogeneous data streams for this experiment.</p>
 <p>The results can be seen in Figure <a class="xref figref" href="#fig-main-bigbench">4</a>. We find that ES learns in this massive and messy multi-task setting with non-uniform task distributions evaluated with widely different metrics. The task category-wise numbers for BIG-Bench can be found in the appendix.</p>
+<div class="takeaway takeaway-plain"><div class="takeaway-body">
+<p><strong>One answer per query is enough.</strong></p>
+<p>In the deployment setting, every user query is answered exactly once, by one perturbation. In GRPO terms that is a group size of 1, the one setting GRPO cannot learn from: its advantage compares several answers to the same prompt, and with a single answer every advantage is zero. ES compares models instead of answers: each perturbation's reward pools 200 different queries, and the perturbations are compared with one another, which is why it can learn from deployment traffic as it arrives.</p>
+</div></div>
 </section>
 <section class="sec" id="sec-verifiers" data-label="sec-verifiers" data-num="3">
 <h2><span class="secnum">3</span>Learning With Imperfect Verifiers</h2>

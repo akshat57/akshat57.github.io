@@ -212,6 +212,9 @@ blockquote.pull em { font-style: normal; }
 /* ---------- intro: TL;DR box (the LaTeX takeaway box) and findings ---------- */
 .sec.intro { padding-top: 64px; }
 .takeaway { margin: 0 0 36px; background: var(--surface); border: 1px solid var(--rule-2); border-radius: 10px; overflow: hidden; }
+/* a takeaway box without the TL;DR label (e.g. "One answer per query is enough."): same box, accent bar on the left */
+.takeaway-plain { margin: 1.8em 0 2.2em; border-color: var(--accent-soft); box-shadow: inset 4px 0 0 var(--accent); }
+.takeaway-plain .takeaway-body { padding: 18px 22px 6px 26px; }
 .takeaway-title { font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); background: var(--code-bg); border-bottom: 1px solid var(--rule); padding: 8px 22px; }
 .takeaway-body { padding: 18px 22px 6px; }
 .takeaway-body p { margin: 0 0 .85em; }
