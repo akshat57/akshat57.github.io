@@ -239,6 +239,14 @@ ul.bullets li::marker { color: var(--accent); }
 .ref-ti { color: var(--ink); }
 .ref-link { font-family: var(--mono); font-size: 13px; color: var(--ink-3); word-break: break-all; }
 
+/* ---------- citation (site-only section after References) ---------- */
+.cite-text { font-family: var(--sans); font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.bibtex { position: relative; margin: 1em 0 0; }
+.bibtex pre { margin: 0; overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; color: var(--ink); }
+.bibtex pre code { background: none; padding: 0; font-size: 1em; border-radius: 0; }
+.bibtex-copy { position: absolute; top: 10px; right: 10px; font-family: var(--sans); font-size: 12.5px; color: var(--ink-2); background: var(--surface); border: 1px solid var(--rule-2); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.bibtex-copy:hover { border-color: var(--ink-3); color: var(--ink); }
+
 /* ---------- appendix ---------- */
 .appendix-divider { margin-top: 120px; }
 .appendix-divider > span { grid-column: content; display: flex; align-items: center; gap: 18px; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }

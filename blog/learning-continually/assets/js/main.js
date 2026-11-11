@@ -278,3 +278,17 @@
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
+
+/* Citation: copy the BibTeX entry. */
+(function () {
+  var btns = document.querySelectorAll(".bibtex-copy");
+  Array.prototype.forEach.call(btns, function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.parentNode.querySelector("code").textContent;
+      var done = function (label) { btn.textContent = label; setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done("Copied"); }, function () { done("Select and copy"); });
+      } else { done("Select and copy"); }
+    });
+  });
+})();
