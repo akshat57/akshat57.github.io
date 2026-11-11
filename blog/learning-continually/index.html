@@ -86,7 +86,7 @@
 <p>And to our surprise, we find that it does!</p>
 <p>Our main findings are as follows:</p>
 <ul class="bullets">
-<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings. This effectively means that ES can learn with a group size of 1 (a single response per query), the one setting where group-based methods like GRPO get no learning signal at all.</li>
+<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings. Notably, this shows that ES can learn with a group size of 1, something group-based RL methods like GRPO cannot do.</li>
 <li><strong>ES learns with imperfect verification.</strong> Even with large amounts of reward verdicts flipped at random, the model keeps most of the gain it makes with a perfect judge. More interestingly, fixing verifier errors midway during inference can recover most of the incurred loss in performance.</li>
 <li><strong>Forgetting can be contained.</strong> General-benchmark scores drop in almost every run, by up to 29 points, but anchored weight decay (<a class="cite" href="#ref-schweighofer2026overcoming" data-key="schweighofer2026overcoming">Schweighofer et al., 2026</a>) removes most of the loss at no cost to learning.</li>
 </ul>
@@ -213,17 +213,6 @@
 <li>Infrastructure challenges: Serving perturbations of the same model may add additional infrastructure challenges which need to be solved, including challenges around quantized serving, prefix caching and effective routing and reward attribution.</li>
 </ul>
 </section>
-<section class="sec refs" id="references">
-<h2>References</h2>
-<ol class="reflist">
-<li id="ref-abdi2026forgetting"><span class="ref-au">Immanuel Abdi, Akshat Gupta, Micah Mok, Alex Lu, Nicholas Lee, and Gopala Anumanchipalli.</span> <span class="ref-ti">Evolutionary Strategies at Scale lead to Catastrophic Forgetting.</span> <em>Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 194–204, San Diego, California, United States. Association for Computational Linguistics</em>, 2026. <a class="ref-link" href="https://doi.org/10.18653/v1/2026.acl-short.18" target="_blank" rel="noopener">doi.org/10.18653/v1/2026.acl-short.18</a></li>
-<li id="ref-qiu2026es"><span class="ref-au">Xin Qiu, Yulu Gan, Conor F. Hayes, Qiyao Liang, Yinggan Xu, Roberto Dailey, Elliot Meyerson, Babak Hodjat, and Risto Miikkulainen.</span> <span class="ref-ti">Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning.</span> <em>Proceedings of the 43rd International Conference on Machine Learning</em>, 2026. arXiv:2509.24372. <a class="ref-link" href="https://arxiv.org/abs/2509.24372" target="_blank" rel="noopener">arxiv.org/abs/2509.24372</a></li>
-<li id="ref-salimans2017es"><span class="ref-au">Tim Salimans, Jonathan Ho, Xi Chen, Szymon Sidor, and Ilya Sutskever.</span> <span class="ref-ti">Evolution Strategies as a Scalable Alternative to Reinforcement Learning.</span> 2017. arXiv:1703.03864. <a class="ref-link" href="https://arxiv.org/abs/1703.03864" target="_blank" rel="noopener">arxiv.org/abs/1703.03864</a></li>
-<li id="ref-schweighofer2026overcoming"><span class="ref-au">Kajetan Schweighofer, Conor F. Hayes, Roberto Dailey, Risto Miikkulainen, and Xin Qiu.</span> <span class="ref-ti">Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies.</span> arXiv preprint arXiv:2605.30148, 2026. <a class="ref-link" href="https://arxiv.org/abs/2605.30148" target="_blank" rel="noopener">arxiv.org/abs/2605.30148</a></li>
-<li id="ref-srivastava2022beyond"><span class="ref-au">Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid, Adam Fisch, Adam R. Brown, Adam Santoro, Aditya Gupta, Adrià Garriga-Alonso, and others.</span> <span class="ref-ti">Beyond the imitation game: Quantifying and extrapolating the capabilities of language models.</span> arXiv preprint arXiv:2206.04615, 2022. <a class="ref-link" href="https://arxiv.org/abs/2206.04615" target="_blank" rel="noopener">arxiv.org/abs/2206.04615</a></li>
-<li id="ref-zheng2026agentic"><span class="ref-au">Zhi Zheng, Rongsheng Chen, Yunpeng Ba, Zhenkun Wang, Yee Whye Teh, and Wee Sun Lee.</span> <span class="ref-ti">Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements.</span> arXiv preprint arXiv:2608.17310, 2026. <a class="ref-link" href="https://arxiv.org/abs/2608.17310" target="_blank" rel="noopener">arxiv.org/abs/2608.17310</a></li>
-</ol>
-</section>
 <section class="sec citation" id="citation">
 <h2>Citation</h2>
 <p>Please cite this post as:</p>
@@ -236,6 +225,17 @@
   howpublished = {\url{https://akshat57.github.io/blog/population-serving/}},
   note         = {Blog post}
 }</code></pre></div>
+</section>
+<section class="sec refs" id="references">
+<h2>References</h2>
+<ol class="reflist">
+<li id="ref-abdi2026forgetting"><span class="ref-au">Immanuel Abdi, Akshat Gupta, Micah Mok, Alex Lu, Nicholas Lee, and Gopala Anumanchipalli.</span> <span class="ref-ti">Evolutionary Strategies at Scale lead to Catastrophic Forgetting.</span> <em>Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 194–204, San Diego, California, United States. Association for Computational Linguistics</em>, 2026. <a class="ref-link" href="https://doi.org/10.18653/v1/2026.acl-short.18" target="_blank" rel="noopener">doi.org/10.18653/v1/2026.acl-short.18</a></li>
+<li id="ref-qiu2026es"><span class="ref-au">Xin Qiu, Yulu Gan, Conor F. Hayes, Qiyao Liang, Yinggan Xu, Roberto Dailey, Elliot Meyerson, Babak Hodjat, and Risto Miikkulainen.</span> <span class="ref-ti">Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning.</span> <em>Proceedings of the 43rd International Conference on Machine Learning</em>, 2026. arXiv:2509.24372. <a class="ref-link" href="https://arxiv.org/abs/2509.24372" target="_blank" rel="noopener">arxiv.org/abs/2509.24372</a></li>
+<li id="ref-salimans2017es"><span class="ref-au">Tim Salimans, Jonathan Ho, Xi Chen, Szymon Sidor, and Ilya Sutskever.</span> <span class="ref-ti">Evolution Strategies as a Scalable Alternative to Reinforcement Learning.</span> 2017. arXiv:1703.03864. <a class="ref-link" href="https://arxiv.org/abs/1703.03864" target="_blank" rel="noopener">arxiv.org/abs/1703.03864</a></li>
+<li id="ref-schweighofer2026overcoming"><span class="ref-au">Kajetan Schweighofer, Conor F. Hayes, Roberto Dailey, Risto Miikkulainen, and Xin Qiu.</span> <span class="ref-ti">Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies.</span> arXiv preprint arXiv:2605.30148, 2026. <a class="ref-link" href="https://arxiv.org/abs/2605.30148" target="_blank" rel="noopener">arxiv.org/abs/2605.30148</a></li>
+<li id="ref-srivastava2022beyond"><span class="ref-au">Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid, Adam Fisch, Adam R. Brown, Adam Santoro, Aditya Gupta, Adrià Garriga-Alonso, and others.</span> <span class="ref-ti">Beyond the imitation game: Quantifying and extrapolating the capabilities of language models.</span> arXiv preprint arXiv:2206.04615, 2022. <a class="ref-link" href="https://arxiv.org/abs/2206.04615" target="_blank" rel="noopener">arxiv.org/abs/2206.04615</a></li>
+<li id="ref-zheng2026agentic"><span class="ref-au">Zhi Zheng, Rongsheng Chen, Yunpeng Ba, Zhenkun Wang, Yee Whye Teh, and Wee Sun Lee.</span> <span class="ref-ti">Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements.</span> arXiv preprint arXiv:2608.17310, 2026. <a class="ref-link" href="https://arxiv.org/abs/2608.17310" target="_blank" rel="noopener">arxiv.org/abs/2608.17310</a></li>
+</ol>
 </section>
 <div class="appendix-divider" id="appendix"><span>Appendix</span></div>
 <section class="sec appx" id="app-es-data-streams" data-label="app:es-data-streams" data-num="A">

@@ -73,7 +73,7 @@
 <p>And to our surprise, we find that it does!</p>
 <p>Our main findings are as follows:</p>
 <ul class="bullets">
-<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings. This effectively means that ES can learn with a group size of 1 (a single response per query), the one setting where group-based methods like GRPO get no learning signal at all.</li>
+<li><strong>Population serving enables parametric learning during inference.</strong> Under deployment conditions, serving populations of a common model followed by period merging can enable learning in single-turn, multi-turn agentic, and massively multi-task problem settings. Notably, this shows that ES can learn with a group size of 1, something group-based RL methods like GRPO cannot do.</li>
 <li><strong>ES learns with imperfect verification.</strong> Even with large amounts of reward verdicts flipped at random, the model keeps most of the gain it makes with a perfect judge. More interestingly, fixing verifier errors midway during inference can recover most of the incurred loss in performance.</li>
 <li><strong>Forgetting can be contained.</strong> General-benchmark scores drop in almost every run, by up to 29 points, but anchored weight decay (<a class="cite" href="#ref-schweighofer2026overcoming" data-key="schweighofer2026overcoming">Schweighofer et al., 2026</a>) removes most of the loss at no cost to learning.</li>
 </ul>
