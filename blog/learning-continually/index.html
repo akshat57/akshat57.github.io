@@ -109,7 +109,7 @@
 <h2><span class="secnum">2</span>Learning Under Deployment Conditions: Heterogeneous Data and Sampled Decoding</h2>
 <figure class="fig single wide" data-label="fig:regimes" id="fig-regimes">
 <div class="panels">
-<div class="panel"><img src="figures/fig_regimes_stacked.svg" width="675" height="393" alt="Three data regimes over three time steps, T = 1, 2, 3, with three perturbed copies of the model. Fixed: the same query Q1 goes to every copy at every step, greedy decoding, N times T passes per query. Fresh: a new query at each step goes to every copy, greedy decoding, N passes per query. Heterogeneous: each of the queries Q1 to Q9 goes to exactly one copy, sampled decoding, 1 pass per query" loading="lazy"></div>
+<div class="panel"><img src="figures/fig_regimes_stacked.svg" width="675" height="393" alt="Three data regimes over three time steps, t = 1, 2, 3, with three perturbed copies of the model. Fixed: the same query Q1 goes to every copy at every step, greedy decoding, N times T passes per query. Fresh: a new query at each step goes to every copy, greedy decoding, N passes per query. Heterogeneous: each of the queries Q1 to Q9 goes to exactly one copy, sampled decoding, 1 pass per query" loading="lazy"></div>
 </div>
 <figcaption><span class="fignum">Figure 2.</span> <strong>Three data regimes for ES.</strong> <em>Fixed</em> sends one query set to every replica in every iteration, as in prior ES work; <em>Fresh</em> sends each new query set to every replica once; <em>Heterogeneous</em> sends each new query to exactly one replica, decoded with sampling. Only the last matches a serving fleet, where a query costs one forward pass rather than \(N\) or \(N \times T\).</figcaption>
 </figure>
