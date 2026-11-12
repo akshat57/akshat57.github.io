@@ -1,7 +1,7 @@
 /* Population Serving: blog styles, design B.
    One centred column on white, nothing fixed but a small Contents button. Ink and the five colours all come from the
    post's own diagrams: the navy of the robots, the blue Figure 2 uses for the deployment setting (the default accent),
-   and the four perturbation colours (amber, teal, pink, violet), used only for the dots that open each section. */
+   and the four perturbation colours (amber, teal, blue, violet), used only for the dots that open each section. */
 :root {
   --ground: #ffffff;
   --ink: #20212c;
@@ -13,7 +13,7 @@
   --wash: #f5f6f9;
   --p1: #ffb224;
   --p2: #1fd1b8;
-  --p3: #ff6fae;
+  --p3: #2348c9;
   --p4: #9277ff;
   --accent: #4263eb;
   --accent-ink: #3451d1;

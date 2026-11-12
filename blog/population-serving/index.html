@@ -12,12 +12,12 @@
 <meta property="og:image" content="https://akshat57.github.io/blog/population-serving/assets/card.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://akshat57.github.io/blog/population-serving/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2323232e'/%3E%3Ccircle cx='10.5' cy='10.5' r='4.3' fill='%23ffb224'/%3E%3Ccircle cx='21.5' cy='10.5' r='4.3' fill='%231fd1b8'/%3E%3Ccircle cx='10.5' cy='21.5' r='4.3' fill='%23ff6fae'/%3E%3Ccircle cx='21.5' cy='21.5' r='4.3' fill='%239277ff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2323232e'/%3E%3Ccircle cx='10.5' cy='10.5' r='4.3' fill='%23ffb224'/%3E%3Ccircle cx='21.5' cy='10.5' r='4.3' fill='%231fd1b8'/%3E%3Ccircle cx='10.5' cy='21.5' r='4.3' fill='%234263eb'/%3E%3Ccircle cx='21.5' cy='21.5' r='4.3' fill='%239277ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,400..800;1,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/vendor/katex/katex.min.css?v=3f94e1b737">
-<link rel="stylesheet" href="assets/css/style.css?v=bb31146bc3">
+<link rel="stylesheet" href="assets/css/style.css?v=cd977c7377">
 </head>
 <body>
 <a class="skip" href="#sec-intro">Skip to the post</a>
@@ -47,7 +47,7 @@
     </div>
 <figure class="fig single wide" data-label="fig:population-serving" id="fig-population-serving">
 <div class="panels">
-<div class="panel"><img src="figures/population_serving_D_brighter.svg" width="900" height="360" alt="Population serving. Today: the same model, theta with a lock, serves identical copies to every user. Population serving: 1 perturb the source model theta_t, 2 serve and score: each perturbed copy theta_t plus sigma epsilon_i serves its own users and collects rewards, 3 merge the copies into theta_t+1, which is served in the next serving window" fetchpriority="high"></div>
+<div class="panel"><img src="figures/population_serving_bots.svg" width="675" height="270" alt="Population serving. Today: the same model, theta with a lock, is served as identical copies, and its queries are not scored. Population serving: 1 perturb the source model theta_t, 2 serve and score: each perturbed copy theta_t plus sigma epsilon_i answers its own queries and collects a reward for each, 3 merge the copies into theta_t+1, which is served in the next serving window" fetchpriority="high"></div>
 </div>
 <figcaption><span class="fignum">Figure 1.</span> <strong>Population serving.</strong> <em>Left:</em> today, every user is served the exact same model, and the compute spent serving it is not reused. <em>Right:</em> we propose population serving, where <strong>(1)</strong> we add a small amount of Gaussian noise to a common source model \(\theta_t\) to create a population of \(N\) perturbations and serve users a population of models instead of a single model, <strong>(2)</strong> each perturbation serves its own users and is scored on the traffic it receives, and <strong>(3)</strong> the perturbations are periodically merged into a new source model <span class="nw">\(\theta_{t+1}\),</span> from which a fresh population is drawn and served in the next serving window.</figcaption>
 </figure>
@@ -92,7 +92,7 @@
 <h2><span class="secnum">2</span>Learning Under Deployment Conditions: Heterogeneous Data and Sampled Decoding</h2>
 <figure class="fig single wide" data-label="fig:regimes" id="fig-regimes">
 <div class="panels">
-<div class="panel"><img src="figures/fig_regimes_stacked.svg" width="675" height="393" alt="Three data regimes over three time steps, t = 1, 2, 3, with three perturbed copies of the model. Fixed: the same query Q1 goes to every copy at every step, N times T passes per query. Fresh: a new query at each step goes to every copy, N passes per query. Heterogeneous: each of the queries Q1 to Q9 goes to exactly one copy, 1 pass per query" loading="lazy"></div>
+<div class="panel"><img src="figures/fig_regimes_bots.svg" width="675" height="393" alt="Three data regimes over three time steps, t = 1, 2, 3, with three perturbed copies of the model. Fixed: the same query Q1 goes to every copy at every step, N times T passes per query. Fresh: a new query at each step goes to every copy, N passes per query. Heterogeneous: each of the queries Q1 to Q9 goes to exactly one copy, 1 pass per query" loading="lazy"></div>
 </div>
 <figcaption><span class="fignum">Figure 2.</span> <strong>Three data regimes for ES.</strong> <em>Fixed</em> sends the same query to every served perturbation in every iteration, as in prior ES work; <em>Fresh</em> sends a new query in every iteration, but still to every served perturbation; <em>Heterogeneous</em> sends each new query to exactly one served perturbation. Only the last matches deployment, where a query is answered exactly once, rather than \(N \times T\) times (Fixed) or \(N\) times (Fresh), for \(N\) perturbations and \(T\) iterations.</figcaption>
 </figure>
